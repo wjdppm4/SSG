@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
@@ -15,15 +15,13 @@ class PhotoCreate(CreateView):
 
 class PhotoUpdate(UpdateView):
     model = Photo
-    fields = ['author', 'text', 'image']
+    fields = ['text', 'image']
     template_name_suffix = '_update'
     success_url = '/'
 
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
         if form.is_valid():
-            #올바르다면
-            # form : 모델폼
             form.instance.save()
             return redirect('/')
         else:
